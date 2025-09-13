@@ -1,0 +1,2169 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JAVA Autosalon Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #f80;
+            --secondary: #0af;
+            --neon-glow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--primary), 0 0 20px var(--primary);
+            --neon-blue: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--secondary), 0 0 20px var(--secondary);
+            --holo-gradient: linear-gradient(45deg, rgba(255,136,0,0.5), rgba(0,170,255,0.5), rgba(255,136,0,0.5));
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #000;
+            color: white;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            transition: background 1s;
+        }
+
+        body.day {
+            background: linear-gradient(135deg, #87CEEB, #E0F6FF);
+        }
+
+        #entry {
+            height: 100vh;
+            perspective: 1000px;
+            overflow: hidden;
+            position: relative;
+            background: radial-gradient(ellipse at center, #1a1a1a 0%, #000000 100%);
+        }
+
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .car-showroom {
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .entry-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 6rem;
+            text-align: center;
+            color: transparent;
+            background: var(--holo-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            text-shadow: var(--neon-glow);
+            animation: pulse 2s infinite alternate, holoShift 5s infinite linear;
+            position: relative;
+        }
+
+        .entry-title::after {
+            content: "PREMIUM AUTOSALON";
+            position: absolute;
+            bottom: -2rem;
+            left: 0;
+            width: 100%;
+            font-size: 1.5rem;
+            letter-spacing: 0.5rem;
+            text-align: center;
+            color: rgba(255,255,255,0.7);
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+
+        .scroll-down {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 2rem;
+            animation: bounce 2s infinite;
+            z-index: 10;
+            cursor: pointer;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.5));
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+
+        .navbar.scrolled {
+            padding: 15px 5%;
+            background: rgba(0,0,0,0.9);
+            box-shadow: 0 5px 30px rgba(255,136,0,0.2);
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-shadow: var(--neon-glow);
+            display: flex;
+            align-items: center;
+            font-family: 'Orbitron', sans-serif;
+            position: relative;
+            animation: holoShift 5s infinite linear;
+        }
+
+        .logo i {
+            margin-right: 15px;
+            font-size: 2rem;
+            animation: spin 10s linear infinite;
+        }
+
+        .menu {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            position: relative;
+            padding: 5px 10px;
+            transition: all 0.3s;
+        }
+
+        .menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+
+        .menu a:hover {
+            color: var(--primary);
+            text-shadow: var(--neon-glow);
+        }
+
+        .menu a:hover::after {
+            width: 100%;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-icons a {
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+
+        .social-icons a:hover {
+            color: var(--primary);
+            transform: translateY(-3px);
+            text-shadow: var(--neon-glow);
+        }
+
+        .vertical-section {
+            min-height: 100vh;
+            padding: 100px 5%;
+            position: relative;
+            background-size: cover;
+            background-attachment: fixed;
+            transition: background 1s;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: transform 0.5s, color 0.5s;
+            background: var(--holo-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .section-title.animate {
+            transform: translateX(-50%) scale(1.1);
+            text-shadow: var(--neon-glow);
+        }
+
+        .neon-text {
+            text-shadow: var(--neon-glow);
+        }
+
+        .neon-blue {
+            text-shadow: var(--neon-blue);
+        }
+
+        .car-card {
+            opacity: 0;
+            transform: translateY(50px) rotateX(20deg);
+            transition: all 0.8s;
+            margin: 40px auto;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            max-width: 800px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .car-card:hover {
+            transform: translateY(-10px) rotateX(0deg);
+            box-shadow: 0 15px 40px rgba(255,136,0,0.3);
+        }
+
+        .car-card.visible {
+            opacity: 1;
+            transform: translateY(0) rotateX(0deg);
+        }
+
+        .car-card img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            transition: all 0.5s;
+        }
+
+        .car-card:hover img {
+            transform: scale(1.05) rotate(2deg);
+        }
+
+        .car-info {
+            padding: 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .car-info h3 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+            transition: all 0.3s;
+        }
+
+        .car-card:hover h3 {
+            background: var(--holo-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .car-info p {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .specs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .spec-item {
+            background: rgba(255,255,255,0.1);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .spec-item:hover {
+            background: rgba(255,136,0,0.3);
+            transform: scale(1.1);
+        }
+
+        .spec-item i {
+            margin-right: 8px;
+            color: var(--primary);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: var(--holo-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255,136,0,0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s;
+        }
+
+        .btn:hover::after {
+            width: 200%;
+            height: 200%;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255,136,0,0.6);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            margin-left: 15px;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255,136,0,0.1);
+        }
+
+        .btn-compare.selected {
+            background: rgba(255,136,0,0.5);
+        }
+
+        .horizontal-section {
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+            padding: 100px 0;
+        }
+
+        .horizontal-title {
+            position: absolute;
+            top: 50px;
+            left: 5%;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            z-index: 10;
+            text-shadow: var(--neon-blue);
+            background: var(--holo-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .horizontal-container {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-snap-type: x mandatory;
+            padding-left: 5%;
+            width: 400%;
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) rgba(255,255,255,0.1);
+        }
+
+        .horizontal-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .horizontal-container::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        .horizontal-container::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .horizontal-card {
+            min-width: 80vw;
+            height: 70vh;
+            margin-right: 50px;
+            scroll-snap-align: start;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            display: flex;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: all 0.5s;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .horizontal-card:hover {
+            transform: translateY(-10px) rotateY(10deg);
+            box-shadow: 0 15px 40px rgba(0,170,255,0.3);
+        }
+
+        .horizontal-card-img {
+            width: 60%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.5s;
+        }
+
+        .horizontal-card:hover .horizontal-card-img {
+            transform: scale(1.05);
+        }
+
+        .horizontal-card-content {
+            width: 40%;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .horizontal-card h3 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--secondary);
+            transition: all 0.3s;
+        }
+
+        .horizontal-card:hover h3 {
+            background: var(--holo-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .price-tag {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: rgba(0,170,255,0.2);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s;
+        }
+
+        .horizontal-card:hover .price-tag {
+            transform: scale(1.1);
+            background: rgba(0,170,255,0.4);
+        }
+
+        .carousel {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+
+        .carousel img {
+            width: 100px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            opacity: 0.7;
+        }
+
+        .carousel img:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        #contact {
+            background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-container {
+            display: flex;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .contact-info {
+            flex: 1;
+            padding: 50px;
+            background: rgba(0,0,0,0.5);
+        }
+
+        .contact-info h3 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: var(--primary);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .contact-item i {
+            font-size: 1.5rem;
+            margin-right: 20px;
+            color: var(--primary);
+            width: 30px;
+            text-align: center;
+        }
+
+        .contact-form {
+            flex: 1;
+            padding: 50px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 5px;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: var(--neon-glow);
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        footer {
+            background: #0a0a0a;
+            padding: 50px 5%;
+            text-align: center;
+            position: relative;
+        }
+
+        .footer-logo {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-family: 'Orbitron', sans-serif;
+            color: var(--primary);
+            text-shadow: var(--neon-glow);
+            animation: holoShift 5s infinite linear;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 30px;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+            text-shadow: var(--neon-glow);
+        }
+
+        .copyright {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.9rem;
+        }
+
+        .filter-bar {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--primary);
+            border-radius: 20px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--holo-gradient);
+            box-shadow: var(--neon-glow);
+        }
+
+        .countdown {
+            text-align: center;
+            margin: 40px 0;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .countdown span {
+            font-size: 2rem;
+            color: var(--primary);
+            text-shadow: var(--neon-glow);
+            margin: 0 10px;
+        }
+
+        /* =============== ИГРА =============== */
+        #gameSection {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a1a1a, #000);
+            padding: 50px 0;
+        }
+
+        #gameContainer {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        #startScreen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            border-radius: 10px;
+        }
+        
+        #startScreen h3 {
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            text-shadow: var(--neon-glow);
+        }
+        
+        #gameInfo {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 800px;
+            margin: 10px auto;
+            font-family: 'Orbitron', sans-serif;
+            background: rgba(0,0,0,0.6);
+            padding: 10px 20px;
+            border-radius: 10px;
+        }
+        
+        #mobileControls {
+            display: none;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .control-btn {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: rgba(255, 136, 0, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            color: white;
+            border: 2px solid var(--primary);
+            user-select: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .control-btn:active {
+            transform: scale(0.9);
+            background: rgba(255, 136, 0, 0.6);
+        }
+        
+        #gameCanvas {
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            box-shadow: var(--neon-glow);
+            background: #000;
+        }
+
+        /* Стили для экрана выбора машины */
+        #carSelection {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 20;
+            border-radius: 10px;
+        }
+
+        .car-options {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .car-option {
+            width: 150px;
+            height: 80px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .car-option img {
+            width: 90%;
+            height: 90%;
+            object-fit: contain;
+        }
+
+        .car-option:hover, .car-option.selected {
+            border-color: var(--primary);
+            transform: scale(1.05);
+            box-shadow: var(--neon-glow);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+            40% { transform: translateY(-20px) translateX(-50%); }
+            60% { transform: translateY(-10px) translateX(-50%); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes holoShift {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 200% 200%; }
+        }
+
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: rgba(255,136,0,0.2);
+            border-radius: 50%;
+            filter: blur(5px);
+            animation: float 10s infinite ease-in-out;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.8);
+        }
+
+        .modal-content {
+            background-color: #111;
+            margin: 15% auto;
+            padding: 30px;
+            border: 1px solid var(--primary);
+            width: 80%;
+            max-width: 800px;
+            border-radius: 15px;
+            color: white;
+            box-shadow: var(--neon-glow);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 15px;
+        }
+
+        .modal-header img {
+            width: 200px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-right: 20px;
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        .modal-specs {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .modal-spec-item {
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .modal-spec-item strong {
+            display: block;
+            color: var(--primary);
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        th {
+            background-color: rgba(255,136,0,0.1);
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        #backToTop {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: none;
+            z-index: 100;
+        }
+
+        @media (max-width: 992px) {
+            .horizontal-card {
+                min-width: 90vw;
+                flex-direction: column;
+                height: 80vh;
+            }
+
+            .horizontal-card-img {
+                width: 100%;
+                height: 50%;
+            }
+
+            .horizontal-card-content {
+                width: 100%;
+                height: 50%;
+                padding: 20px;
+            }
+
+            .contact-container {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .entry-title {
+                font-size: 4rem;
+            }
+
+            .navbar {
+                flex-direction: column;
+                padding: 15px;
+            }
+
+            .menu {
+                margin-top: 15px;
+                gap: 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .car-card {
+                margin: 20px 0;
+            }
+
+            .filter-bar {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            #gameCanvas {
+                width: 100%;
+                height: auto;
+            }
+            
+            #mobileControls {
+                display: flex;
+            }
+            
+            #gameInfo {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+            
+            .car-options {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="entry">
+        <div class="floating-elements">
+            <div class="floating-element" style="width: 100px; height: 100px; top: 20%; left: 10%; animation-delay: 0s;"></div>
+            <div class="floating-element" style="width: 150px; height: 150px; top: 60%; left: 80%; animation-delay: 2s;"></div>
+            <div class="floating-element" style="width: 80px; height: 80px; top: 80%; left: 30%; animation-delay: 4s;"></div>
+            <div class="floating-element" style="width: 120px; height: 120px; top: 30%; left: 70%; animation-delay: 6s;"></div>
+        </div>
+        <div class="particles" id="particles-js"></div>
+        <div class="car-showroom">
+            <h1 class="entry-title">JAVA</h1>
+        </div>
+        <div class="scroll-down" onclick="scrollToSection('bmw')">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-car"></i>
+            JAVA
+        </div>
+        <div class="menu">
+            <a href="#bmw">BMW</a>
+            <a href="#mercedes">Mercedes</a>
+            <a href="#exclusive">Эксклюзив</a>
+            <a href="#contact">Контакты</a>
+            <a href="#gameSection">Игра</a>
+            <a href="#" id="compareBtn">Сравнить (<span id="compareCount">0</span>)</a>
+        </div>
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-telegram"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+    </nav>
+
+    <section id="bmw" class="vertical-section" style="background-image: url('https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');">
+        <div class="filter-bar">
+            <button class="filter-btn" data-filter="all">Все</button>
+            <button class="filter-btn" data-filter="bmw">BMW</button>
+            <button class="filter-btn" data-filter="mercedes">Mercedes</button>
+            <button class="filter-btn" data-filter="exclusive">Эксклюзив</button>
+        </div>
+        <h2 class="section-title neon-text">BMW COLLECTION</h2>
+        <div class="countdown">
+            Спецпредложение до: <span id="days">00</span>:<span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span>
+        </div>
+        <div class="car-card" data-id="bmw-m5" data-brand="bmw"
+             data-full-image="https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+             data-full-description="Легендарный седан BMW M5 Competition сочетает в себе комфорт премиального седана с мощью и динамикой спортивного автомобиля. Оснащен 4.4-литровым двигателем V8 с двумя турбинами, развивающим 625 л.с. и 750 Нм крутящего момента. Оснащен системой полного привода M xDrive, 8-ступенчатой АКПП M Steptronic и активным дифференциалом M Sport.">
+            <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="BMW M5 Competition">
+            <div class="car-info">
+                <h3>BMW M5 Competition</h3>
+                <p>Легендарный седан с характером спортивного автомобиля.</p>
+                <div class="specs">
+                    <div class="spec-item"><i class="fas fa-tachometer-alt"></i> 625 л.с.</div>
+                    <div class="spec-item"><i class="fas fa-bolt"></i> 3.3 сек до 100 км/ч</div>
+                    <div class="spec-item"><i class="fas fa-speedometer"></i> 305 км/ч</div>
+                    <div class="spec-item"><i class="fas fa-gas-pump"></i> 10.8 л/100км</div>
+                    <div class="spec-item"><i class="fas fa-cogs"></i> 8-ст. АКПП</div>
+                    <div class="spec-item"><i class="fas fa-car"></i> Полный привод</div>
+                </div>
+                <a href="#" class="btn">Заказать тест-драйв</a>
+                <a href="#" class="btn btn-outline btn-details">Подробнее</a>
+                <a href="#" class="btn btn-outline btn-compare">Сравнить</a>
+            </div>
+        </div>
+
+        <div class="car-card" data-id="bmw-i8" data-brand="bmw"
+             data-full-image="https://images.unsplash.com/photo-1580274455191-1c62238fa333?ixlib=rb-4.0.3&auto=format&fit=crop&w=2128&q=80"
+             data-full-description="BMW i8 Roadster — это гибридный спорткар с потрясающим дизайном и революционной технологией. Сочетает 1.5-литровый бензиновый двигатель мощностью 231 л.с. с электромотором на 143 л.с. Общая мощность — 374 л.с. Может проехать до 55 км только на электротяге. Оснащен системой полного привода, карбоновым кузовом и сдвижной крышей.">
+            <img src="https://images.unsplash.com/photo-1580274455191-1c62238fa333?ixlib=rb-4.0.3&auto=format&fit=crop&w=2128&q=80" alt="BMW i8 Roadster">
+            <div class="car-info">
+                <h3>BMW i8 Roadster</h3>
+                <p>Гибридный спорткар с потрясающим дизайном.</p>
+                <div class="specs">
+                    <div class="spec-item"><i class="fas fa-tachometer-alt"></i> 374 л.с.</div>
+                    <div class="spec-item"><i class="fas fa-bolt"></i> 4.4 сек до 100 км/ч</div>
+                    <div class="spec-item"><i class="fas fa-leaf"></i> Гибрид</div>
+                    <div class="spec-item"><i class="fas fa-road"></i> 55 км на электротяге</div>
+                    <div class="spec-item"><i class="fas fa-battery-full"></i> 11.6 кВт·ч</div>
+                    <div class="spec-item"><i class="fas fa-weight"></i> 1595 кг</div>
+                </div>
+                <a href="#" class="btn">Заказать тест-драйв</a>
+                <a href="#" class="btn btn-outline btn-details">Подробнее</a>
+                <a href="#" class="btn btn-outline btn-compare">Сравнить</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="mercedes" class="vertical-section" style="background-image: url('https://images.unsplash.com/photo-1553440569-bcc63803a83d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2025&q=80');">
+        <h2 class="section-title neon-text">MERCEDES-BENZ</h2>
+        <div class="car-card" data-id="mercedes-amg-gt" data-brand="mercedes"
+             data-full-image="https://images.unsplash.com/photo-1553440569-bcc63803a83d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2025&q=80"
+             data-full-description="Mercedes-AMG GT R — это чистое воплощение мощи и агрессии. Оснащен 4.0-литровым двигателем V8 Biturbo мощностью 585 л.с. и 700 Нм крутящего момента. Имеет активную аэродинамику, систему заднего рулевого управления и 9-ступенчатую АКПП AMG SPEEDSHIFT DCT. Автомобиль оснащен керамическими тормозами и адаптивной подвеской AMG RIDE CONTROL.">
+            <img src="https://images.unsplash.com/photo-1553440569-bcc63803a83d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2025&q=80" alt="Mercedes-AMG GT R">
+            <div class="car-info">
+                <h3>Mercedes-AMG GT R</h3>
+                <p>Чистая мощь и агрессия.</p>
+                <div class="specs">
+                    <div class="spec-item"><i class="fas fa-tachometer-alt"></i> 585 л.с.</div>
+                    <div class="spec-item"><i class="fas fa-bolt"></i> 3.6 сек до 100 км/ч</div>
+                    <div class="spec-item"><i class="fas fa-speedometer"></i> 318 км/ч</div>
+                    <div class="spec-item"><i class="fas fa-cogs"></i> 9-ст. AMG SPEEDSHIFT</div>
+                    <div class="spec-item"><i class="fas fa-tachometer"></i> 700 Нм</div>
+                    <div class="spec-item"><i class="fas fa-car"></i> Задний привод</div>
+                </div>
+                <a href="#" class="btn">Заказать тест-драйв</a>
+                <a href="#" class="btn btn-outline btn-details">Подробнее</a>
+                <a href="#" class="btn btn-outline btn-compare">Сравнить</a>
+            </div>
+        </div>
+
+        <div class="car-card" data-id="mercedes-g63" data-brand="mercedes"
+             data-full-image="https://images.unsplash.com/photo-1555626906-fcf10d6851b4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+             data-full-description="Mercedes-AMG G 63 — легендарный внедорожник с характером суперкара. Оснащен 4.0-литровым двигателем V8 Biturbo мощностью 585 л.с. и 850 Нм крутящего момента. Имеет систему полного привода 4MATIC+, 9-ступенчатую АКПП AMG SPEEDSHIFT TCT и три блокировки дифференциалов. Автомобиль оснащен адаптивной подвеской AMG RIDE CONTROL и фирменной решеткой радиатора с вертикальными планками.">
+            <img src="https://images.unsplash.com/photo-1555626906-fcf10d6851b4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Mercedes-AMG G 63">
+            <div class="car-info">
+                <h3>Mercedes-AMG G 63</h3>
+                <p>Легендарный внедорожник с характером суперкара.</p>
+                <div class="specs">
+                    <div class="spec-item"><i class="fas fa-tachometer-alt"></i> 585 л.с.</div>
+                    <div class="spec-item"><i class="fas fa-bolt"></i> 4.5 сек до 100 км/ч</div>
+                    <div class="spec-item"><i class="fas fa-mountain"></i> Полный привод 4MATIC</div>
+                    <div class="spec-item"><i class="fas fa-gas-pump"></i> 13.1 л/100км</div>
+                    <div class="spec-item"><i class="fas fa-tachometer"></i> 850 Нм</div>
+                    <div class="spec-item"><i class="fas fa-weight"></i> 2600 кг</div>
+                </div>
+                <a href="#" class="btn">Заказать тест-драйв</a>
+                <a href="#" class="btn btn-outline btn-details">Подробнее</a>
+                <a href="#" class="btn btn-outline btn-compare">Сравнить</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="exclusive" class="horizontal-section">
+        <h2 class="horizontal-title">ЭКСКЛЮЗИВНЫЕ МОДЕЛИ</h2>
+        <div class="horizontal-container">
+            <div class="horizontal-card" data-id="bugatti-chiron" data-brand="exclusive"
+                 data-full-image="https://images.unsplash.com/photo-1511919884226-fd3cad34687c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+                 data-full-description="Bugatti Chiron — икона автомобилестроения, сочетающая непревзойденную мощь с роскошью и технологичностью. Оснащен 8.0-литровым двигателем W16 с четырьмя турбинами, развивающим 1500 л.с. и 1600 Нм крутящего момента. Имеет 7-ступенчатую роботизированную коробку передач и систему полного привода. Максимальная скорость ограничена электроникой на отметке 420 км/ч.">
+                <img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Bugatti Chiron" class="horizontal-card-img">
+                <div class="horizontal-card-content">
+                    <h3>Bugatti Chiron</h3>
+                    <p>Икона автомобилестроения.</p>
+                    <div class="specs">
+                        <div class="spec-item"><i class="fas fa-tachometer-alt"></i> 1500 л.с.</div>
+                        <div class="spec-item"><i class="fas fa-bolt"></i> 2.4 сек до 100 км/ч</div>
+                        <div class="spec-item"><i class="fas fa-speedometer"></i> 420 км/ч</div>
+                        <div class="spec-item"><i class="fas fa-gas-pump"></i> 22.5 л/100км</div>
+                    </div>
+                    <div class="price-tag">€2.5M</div>
+                    <a href="#" class="btn">Запросить цену</a>
+                    <a href="#" class="btn btn-outline btn-details">Подробнее</a>
+                    <a href="#" class="btn btn-outline btn-compare">Сравнить</a>
+                </div>
+            </div>
+
+            <div class="horizontal-card" data-id="rolls-royce-phantom" data-brand="exclusive"
+                 data-full-image="https://images.unsplash.com/photo-1633613286848-e6f43bbafb8d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+                 data-full-description="Rolls-Royce Phantom VIII — абсолютная роскошь и престиж. Оснащен 6.75-литровым двигателем V12 мощностью 571 л.с. и 900 Нм крутящего момента. Имеет 8-ступенчатую АКПП и систему полного привода. Интерьер отделан натуральной кожей, деревом и металлом ручной работы. Особенность — 'Галерея' на приборной панели для размещения произведений искусства.">
+                <img src="https://images.unsplash.com/photo-1633613286848-e6f43bbafb8d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Rolls-Royce Phantom" class="horizontal-card-img">
+                <div class="horizontal-card-content">
+                    <h3>Rolls-Royce Phantom</h3>
+                    <p>Абсолютная роскошь и престиж.</p>
+                    <div class="specs">
+                        <div class="spec-item"><i class="fas fa-tachometer-alt"></i> 571 л.с.</div>
+                        <div class="spec-item"><i class="fas fa-couch"></i> Ручная сборка</div>
+                        <div class="spec-item"><i class="fas fa-car"></i> 5.7 м длина</div>
+                        <div class="spec-item"><i class="fas fa-weight"></i> 2560 кг</div>
+                    </div>
+                    <div class="price-tag">€450K</div>
+                    <a href="#" class="btn">Запросить цену</a>
+                    <a href="#" class="btn btn-outline btn-details">Подробнее</a>
+                    <a href="#" class="btn btn-outline btn-compare">Сравнить</a>
+                </div>
+            </div>
+
+            <div class="horizontal-card" data-id="lamborghini-aventador" data-brand="exclusive"
+                 data-full-image="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+                 data-full-description="Lamborghini Aventador SVJ — чистая итальянская страсть с непревзойденной аэродинамикой. Оснащен 6.5-литровым двигателем V12 мощностью 770 л.с. и 720 Нм крутящего момента. Имеет систему полного привода и 7-ступенчатую роботизированную коробку передач ISR. Оснащен активной аэродинамической системой ALA 2.0 и карбоновым монококом.">
+                <img src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Lamborghini Aventador SVJ" class="horizontal-card-img">
+                <div class="horizontal-card-content">
+                    <h3>Lamborghini Aventador SVJ</h3>
+                    <p>Чистая итальянская страсть.</p>
+                    <div class="specs">
+                        <div class="spec-item"><i class="fas fa-tachometer-alt"></i> 770 л.с.</div>
+                        <div class="spec-item"><i class="fas fa-bolt"></i> 2.8 сек до 100 км/ч</div>
+                        <div class="spec-item"><i class="fas fa-speedometer"></i> 350 км/ч</div>
+                        <div class="spec-item"><i class="fas fa-gas-pump"></i> 17.2 л/100км</div>
+                    </div>
+                    <div class="price-tag">€517K</div>
+                    <a href="#" class="btn">Запросить цену</a>
+                    <a href="#" class="btn btn-outline btn-details">Подробнее</a>
+                    <a href="#" class="btn btn-outline btn-compare">Сравнить</a>
+                </div>
+            </div>
+
+            <div class="horizontal-card" data-id="ferrari-sf90" data-brand="exclusive"
+                 data-full-image="https://images.unsplash.com/photo-1616788494707-ec28f08d05a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1974&q=80"
+                 data-full-description="Ferrari SF90 Stradale — первый серийный гибрид Ferrari. Сочетает 4.0-литровый двигатель V8 мощностью 780 л.с. с тремя электромоторами (220 л.с.). Общая мощность — 1000 л.с. Имеет 8-ступенчатую роботизированную коробку передач и систему полного привода. Оснащен системой рекуперации энергии и может проехать до 25 км только на электротяге.">
+                <img src="https://images.unsplash.com/photo-1616788494707-ec28f08d05a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1974&q=80" alt="Ferrari SF90 Stradale" class="horizontal-card-img">
+                <div class="horizontal-card-content">
+                    <h3>Ferrari SF90 Stradale</h3>
+                    <p>Первый серийный гибрид Ferrari.</p>
+                    <div class="specs">
+                        <div class="spec-item"><i class="fas fa-tachometer-alt"></i> 1000 л.с.</div>
+                        <div class="spec-item"><i class="fas fa-bolt"></i> 2.5 сек до 100 км/ч</div>
+                        <div class="spec-item"><i class="fas fa-leaf"></i> Гибрид</div>
+                        <div class="spec-item"><i class="fas fa-road"></i> 25 км на электротяге</div>
+                    </div>
+                    <div class="price-tag">€625K</div>
+                    <a href="#" class="btn">Запросить цену</a>
+                    <a href="#" class="btn btn-outline btn-details">Подробнее</a>
+                    <a href="#" class="btn btn-outline btn-compare">Сравнить</a>
+                </div>
+            </div>
+        </div>
+        <div class="carousel">
+            <img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Bugatti Chiron" onclick="scrollToCard('bugatti-chiron')">
+            <img src="https://images.unsplash.com/photo-1633613286848-e6f43bbafb8d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Rolls-Royce Phantom" onclick="scrollToCard('rolls-royce-phantom')">
+            <img src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Lamborghini Aventador SVJ" onclick="scrollToCard('lamborghini-aventador')">
+            <img src="https://images.unsplash.com/photo-1616788494707-ec28f08d05a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1974&q=80" alt="Ferrari SF90 Stradale" onclick="scrollToCard('ferrari-sf90')">
+        </div>
+    </section>
+
+    <section id="contact" class="vertical-section">
+        <h2 class="section-title neon-text">СВЯЖИТЕСЬ С НАМИ</h2>
+        <div class="contact-container">
+            <div class="contact-info">
+                <h3>Контакты</h3>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <p><strong>Адрес:</strong></p>
+                        <p>г. Москва, ул. Престижная, 1</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <div>
+                        <p><strong>Телефон:</strong></p>
+                        <p>+7 (495) 123-45-67</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <p><strong>Email:</strong></p>
+                        <p>info@java-autosalon.ru</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                        <p><strong>Часы работы:</strong></p>
+                        <p>Пн-Пт: 9:00 - 21:00</p>
+                        <p>Сб-Вс: 10:00 - 20:00</p>
+                    </div>
+                </div>
+            </div>
+            <div class="contact-form">
+                <h3>Оставьте заявку</h3>
+                <form action="https://example.com/submit" method="post">
+                    <div class="form-group">
+                        <label for="name">Ваше имя</label>
+                        <input type="text" id="name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Телефон</label>
+                        <input type="tel" id="phone" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Сообщение</label>
+                        <textarea id="message" class="form-control"></textarea>
+                    </div>
+                    <button type="submit" class="btn">Отправить</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section id="gameSection">
+        <h2 class="section-title neon-text">МИНИ-ИГРА: ГОНКА PREMIUM</h2>
+        <div id="gameInfo">
+            <div>Уровень: <span id="level">1</span></div>
+            <div>Счет: <span id="score">0</span></div>
+            <div>Скорость: <span id="speed">0</span> км/ч</div>
+        </div>
+        <div id="gameContainer">
+            <canvas id="gameCanvas" width="800" height="400"></canvas>
+            <div id="startScreen">
+                <h3>ГОНКА PREMIUM</h3>
+                <button id="startGameBtn" class="btn">ВЫБРАТЬ МАШИНУ</button>
+                <p style="margin-top: 20px;">Управление: ← → или A D</p>
+                <p>Ускорение: ↑ или W</p>
+            </div>
+            <div id="carSelection">
+                <h3>ВЫБЕРИТЕ СВОЙ АВТОМОБИЛЬ</h3>
+                <div class="car-options">
+                    <div class="car-option" data-car="bmw">
+                        <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="BMW">
+                    </div>
+                    <div class="car-option" data-car="mercedes">
+                        <img src="https://images.unsplash.com/photo-1553440569-bcc63803a83d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2025&q=80" alt="Mercedes">
+                    </div>
+                    <div class="car-option" data-car="bugatti">
+                        <img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Bugatti">
+                    </div>
+                    <div class="car-option" data-car="ferrari">
+                        <img src="https://images.unsplash.com/photo-1616788494707-ec28f08d05a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1974&q=80" alt="Ferrari">
+                    </div>
+                </div>
+                <button id="startWithSelectedCar" class="btn">НАЧАТЬ ГОНКУ</button>
+            </div>
+        </div>
+        <div id="mobileControls">
+            <div class="control-btn" id="leftBtn"><i class="fas fa-arrow-left"></i></div>
+            <div class="control-btn" id="rightBtn"><i class="fas fa-arrow-right"></i></div>
+            <div class="control-btn" id="upBtn"><i class="fas fa-arrow-up"></i></div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-logo">JAVA</div>
+        <div class="footer-links">
+            <a href="#bmw">BMW</a>
+            <a href="#mercedes">Mercedes</a>
+            <a href="#exclusive">Эксклюзив</a>
+            <a href="#contact">Контакты</a>
+            <a href="#gameSection">Игра</a>
+            <a href="#">О компании</a>
+            <a href="#">Условия</a>
+        </div>
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-telegram"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+            <a href="#"><i class="fab fa-vk"></i></a>
+        </div>
+        <p class="copyright">© 2023 JAVA Autosalon Premium. Все права защищены.</p>
+    </footer>
+
+    <div id="carModal" class="modal">
+        <div class="modal-content">
+            <span class="close">×</span>
+            <div class="modal-header">
+                <img id="modalImage" src="" alt="Car Image">
+                <div>
+                    <h2 id="modalTitle" class="modal-title"></h2>
+                    <div class="specs">
+                        <div class="spec-item"><i class="fas fa-tachometer-alt"></i> <span id="modalPower"></span></div>
+                        <div class="spec-item"><i class="fas fa-bolt"></i> <span id="modalAcceleration"></span></div>
+                        <div class="spec-item"><i class="fas fa-speedometer"></i> <span id="modalMaxSpeed"></span></div>
+                    </div>
+                </div>
+            </div>
+            <p id="modalDescription" style="margin-bottom: 20px;"></p>
+            <div class="modal-specs">
+                <div class="modal-spec-item">
+                    <strong>Двигатель</strong>
+                    <span id="modalEngine"></span>
+                </div>
+                <div class="modal-spec-item">
+                    <strong>Привод</strong>
+                    <span id="modalDrive"></span>
+                </div>
+                <div class="modal-spec-item">
+                    <strong>Коробка передач</strong>
+                    <span id="modalTransmission"></span>
+                </div>
+                <div class="modal-spec-item">
+                    <strong>Расход топлива</strong>
+                    <span id="modalFuel"></span>
+                </div>
+            </div>
+            <a href="#" class="btn">Заказать тест-драйв</a>
+        </div>
+    </div>
+
+    <div id="compareModal" class="modal">
+        <div class="modal-content">
+            <span class="close">×</span>
+            <h2>Сравнение автомобилей</h2>
+            <div id="compareTable"></div>
+            <div style="margin-top: 20px; text-align: center;">
+                <a href="#" class="btn">Запросить индивидуальное предложение</a>
+            </div>
+        </div>
+    </div>
+
+    <button id="backToTop" class="btn">↑ Наверх</button>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Частицы на главном экране
+            if (document.getElementById('particles-js')) {
+                particlesJS('particles-js', {
+                    particles: {
+                        number: { value: 150, density: { enable: true, value_area: 1000 } },
+                        color: { value: ["#f80", "#0af"] },
+                        shape: { type: "circle" },
+                        opacity: { value: 0.7, random: true },
+                        size: { value: 5, random: true },
+                        line_linked: { enable: true, distance: 150, color: "#f80", opacity: 0.4, width: 1 },
+                        move: { enable: true, speed: 4, direction: "none", random: true, straight: false, out_mode: "out" }
+                    },
+                    interactivity: {
+                        detect_on: "canvas",
+                        events: {
+                            onhover: { enable: true, mode: "repulse" },
+                            onclick: { enable: true, mode: "push" }
+                        }
+                    }
+                });
+            }
+
+            // Анимация карточек автомобилей
+            const cards = document.querySelectorAll('.car-card, .horizontal-card');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            cards.forEach(card => observer.observe(card));
+
+            // Параллакс-эффект для главного экрана
+            const showroom = document.querySelector('.car-showroom');
+            window.addEventListener('mousemove', (e) => {
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
+                showroom.style.transform = `rotateY(${x * 20 - 10}deg) rotateX(${y * -20 + 10}deg)`;
+            });
+
+            // Эффект плавающих элементов
+            const floatingElements = document.querySelectorAll('.floating-element');
+            window.addEventListener('mousemove', (e) => {
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
+                floatingElements.forEach((el, index) => {
+                    const speed = 0.1 * (index + 1);
+                    const xPos = -(x * 100 * speed) + 50;
+                    const yPos = -(y * 100 * speed) + 50;
+                    el.style.transform = `translate(${xPos}px, ${yPos}px)`;
+                });
+            });
+
+            // Фиксированная навигация при скролле
+            const navbar = document.querySelector('.navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 100) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+
+            // Плавная прокрутка
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) target.scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+
+            // Анимация заголовков разделов
+            const sectionTitles = document.querySelectorAll('.section-title');
+            const titleObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    } else {
+                        entry.target.classList.remove('animate');
+                    }
+                });
+            }, { threshold: 0.5 });
+            sectionTitles.forEach(title => titleObserver.observe(title));
+
+            // Система сравнения автомобилей
+            let selectedCars = [];
+            const compareBtn = document.getElementById('compareBtn');
+            const compareCount = document.getElementById('compareCount');
+
+            function updateCompareCount() {
+                compareCount.textContent = selectedCars.length;
+            }
+
+            document.addEventListener('click', (e) => {
+                if (e.target.classList.contains('btn-details')) {
+                    e.preventDefault();
+                    const carCard = e.target.closest('.car-card') || e.target.closest('.horizontal-card');
+                    if (carCard) {
+                        const title = carCard.querySelector('h3').textContent;
+                        const description = carCard.dataset.fullDescription;
+                        const fullImage = carCard.dataset.fullImage;
+                        
+                        // Получаем характеристики
+                        const specs = carCard.querySelectorAll('.spec-item');
+                        const power = specs[0].textContent;
+                        const acceleration = specs[1].textContent;
+                        const maxSpeed = specs[2] ? specs[2].textContent : 'N/A';
+                        const fuel = specs[3] ? specs[3].textContent : 'N/A';
+                        
+                        // Устанавливаем данные в модальное окно
+                        document.getElementById('modalTitle').textContent = title;
+                        document.getElementById('modalDescription').textContent = description;
+                        document.getElementById('modalImage').src = fullImage;
+                        document.getElementById('modalPower').textContent = power;
+                        document.getElementById('modalAcceleration').textContent = acceleration;
+                        document.getElementById('modalMaxSpeed').textContent = maxSpeed;
+                        
+                        // Дополнительные характеристики
+                        document.getElementById('modalEngine').textContent = 'V8 Twin-Turbo';
+                        document.getElementById('modalDrive').textContent = 'Полный';
+                        document.getElementById('modalTransmission').textContent = 'Автомат';
+                        document.getElementById('modalFuel').textContent = fuel;
+                        
+                        document.getElementById('carModal').style.display = 'block';
+                    }
+                } else if (e.target.classList.contains('btn-compare')) {
+                    e.preventDefault();
+                    const carCard = e.target.closest('.car-card') || e.target.closest('.horizontal-card');
+                    if (carCard) {
+                        const carId = carCard.dataset.id;
+                        if (!selectedCars.includes(carId)) {
+                            selectedCars.push(carId);
+                            e.target.classList.add('selected');
+                        } else {
+                            selectedCars = selectedCars.filter(id => id !== carId);
+                            e.target.classList.remove('selected');
+                        }
+                        updateCompareCount();
+                    }
+                }
+            });
+
+            // Закрытие модальных окон
+            document.querySelectorAll('.close').forEach(close => {
+                close.addEventListener('click', () => {
+                    close.parentElement.parentElement.style.display = 'none';
+                });
+            });
+
+            window.addEventListener('click', (e) => {
+                if (e.target.classList.contains('modal')) {
+                    e.target.style.display = 'none';
+                }
+            });
+
+            // Модальное окно сравнения
+            compareBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (selectedCars.length > 0) {
+                    const compareTable = document.getElementById('compareTable');
+                    compareTable.innerHTML = '';
+                    const headers = ['Характеристика', ...selectedCars.map(id => {
+                        const carCard = document.querySelector(`[data-id="${id}"]`);
+                        return carCard.querySelector('h3').textContent;
+                    })];
+                    const table = document.createElement('table');
+                    const headerRow = document.createElement('tr');
+                    headers.forEach(header => {
+                        const th = document.createElement('th');
+                        th.textContent = header;
+                        headerRow.appendChild(th);
+                    });
+                    table.appendChild(headerRow);
+                    const specs = ['Мощность', 'Разгон до 100 км/ч', 'Максимальная скорость', 'Расход топлива', 'Тип привода', 'Коробка передач'];
+                    specs.forEach(spec => {
+                        const row = document.createElement('tr');
+                        const specCell = document.createElement('td');
+                        specCell.textContent = spec;
+                        row.appendChild(specCell);
+                        selectedCars.forEach(id => {
+                            const carCard = document.querySelector(`[data-id="${id}"]`);
+                            const specItems = carCard.querySelectorAll('.spec-item');
+                            let specValue = '';
+                            specItems.forEach(item => {
+                                if (item.textContent.includes(spec.toLowerCase()) || 
+                                    (spec === 'Мощность' && item.textContent.includes('л.с.')) ||
+                                    (spec === 'Расход топлива' && item.textContent.includes('л/100км'))) {
+                                    specValue = item.textContent;
+                                }
+                            });
+                            const td = document.createElement('td');
+                            td.textContent = specValue || 'N/A';
+                            row.appendChild(td);
+                        });
+                        table.appendChild(row);
+                    });
+                    compareTable.appendChild(table);
+                    document.getElementById('compareModal').style.display = 'block';
+                } else {
+                    alert('Выберите автомобили для сравнения!');
+                }
+            });
+
+            // Кнопка "Наверх"
+            const backToTopBtn = document.getElementById('backToTop');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopBtn.style.display = 'block';
+                } else {
+                    backToTopBtn.style.display = 'none';
+                }
+            });
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // Карусель эксклюзивных моделей
+            function scrollToCard(cardId) {
+                const card = document.querySelector(`[data-id="${cardId}"]`);
+                if (card) {
+                    const container = document.querySelector('.horizontal-container');
+                    const scrollLeft = card.offsetLeft - (container.offsetWidth - card.offsetWidth) / 2;
+                    container.scrollTo({
+                        left: scrollLeft,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+
+            // Фильтрация автомобилей
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    const filter = btn.dataset.filter;
+                    document.querySelectorAll('.car-card, .horizontal-card').forEach(card => {
+                        if (filter === 'all' || card.dataset.brand === filter) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            // Таймер обратного отсчета
+            const endDate = new Date();
+            endDate.setDate(endDate.getDate() + 7);
+            function updateCountdown() {
+                const now = new Date();
+                const diff = endDate - now;
+                if (diff <= 0) return;
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                document.getElementById('days').textContent = String(days).padStart(2, '0');
+                document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+                document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+                document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+            }
+            setInterval(updateCountdown, 1000);
+            updateCountdown();
+
+            // Автоматическое переключение дневного/ночного режима
+            const hour = new Date().getHours();
+            if (hour > 6 && hour < 18) {
+                document.body.classList.add('day');
+                document.querySelectorAll('.vertical-section').forEach(section => {
+                    section.style.backgroundBlendMode = 'overlay';
+                });
+            }
+
+            // =============== ИГРА ===============
+            const canvas = document.getElementById('gameCanvas');
+            const ctx = canvas.getContext('2d');
+            const startScreen = document.getElementById('startScreen');
+            const startBtn = document.getElementById('startGameBtn');
+            const carSelection = document.getElementById('carSelection');
+            const startWithSelectedCar = document.getElementById('startWithSelectedCar');
+            const scoreDisplay = document.getElementById('score');
+            const levelDisplay = document.getElementById('level');
+            const speedDisplay = document.getElementById('speed');
+            
+            // Мобильные кнопки
+            const leftBtn = document.getElementById('leftBtn');
+            const rightBtn = document.getElementById('rightBtn');
+            const upBtn = document.getElementById('upBtn');
+            
+            // Параметры игры
+            let gameRunning = false;
+            let carX = canvas.width / 2 - 25;
+            let carSpeed = 0;
+            let roadSpeed = 3;
+            let roadY = 0;
+            let obstacles = [];
+            let score = 0;
+            let level = 1;
+            let frames = 0;
+            let selectedCarType = 'bmw'; // По умолчанию
+            
+            // Изображения для игры
+            const carImages = {
+                bmw: createCarImage('#f80'),
+                mercedes: createCarImage('#0af'),
+                bugatti: createCarImage('#1e90ff'),
+                ferrari: createCarImage('#ff0000')
+            };
+            
+            const obstacleImgs = [
+                createTruckImage(),
+                createBarrierImage(),
+                createConeImage(),
+                createPorscheImage()
+            ];
+            
+            // Звуковые эффекты
+            const sounds = {
+                engine: new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhIqQlJmdoqaqrK+ytLW3ubq8vcDBwsTFxsfIycvMzc7P0NHS09TV1tfY2drb3N3e3+Dh4uPk5ebn6Onq6+zt7u/w8fLz9PX29/j5+vv8/f7/AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8gISIjJCUmJygpKissLS4vMDEyMzQ1Njc4OTo7PD0+P0BBQkNERUZHSElKS0xNTk9QUVJTVFVWV1hZWltcXV5fYGFiY2RlZmdoaWprbG1ub3BxcnN0dXZ3eHl6e3x9fn+AgYKDhIWGh4iJiouMjY6PkJGSk5SVlpeYmZqbnJ2en6ChoqOkpaanqKmqq6ytrq+wsbKztLW2t7i5uru8vb6/wMHCw8TFxsfIycrLzM3Oz9DR0tPU1dbX2Nna29zd3t/g4eLj5OXm5+jp6uvs7e7v8PHy8/T19vf4+fr7/P3+/wABAgMEBQYHCAkKCwwNDg8QERITFBUWFxgZGhscHR4fICEiIyQlJicoKSorLC0uLzAxMjM0NTY3ODk6Ozw9Pj9AQUJDREVGR0hJSktMTU5PUFFSU1RVVldYWVpbXF1eX2BhYmNkZWZnaGlqa2xtbm9wcXJzdHV2d3h5ent8fX5/gIGCg4SFhoeIiYqLjI2Oj5CRkpOUlZaXmJmam5ydnp+goaKjpKWmp6ipqqusra6vsLGys7S1tre4ubq7vL2+v8DBwsPExcbHyMnKy8zNzs/Q0dLT1NXW19jZ2tvc3d7f4OHi4+Tl5ufo6err7O3u7/Dx8vP09fb3+Pn6+/z9/v8A'),
+                crash: new Audio('data:audio/wav;base64,UklGRpQFAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YXAFAACAg4iNkJKTlZWWl5iYl5aVlJOSkZCPj46NjIuKiomIh4eHh4eHiImKi4yNjo+QkJGSkpOUlZaXmJmam5ydnp+goaKjpKWmp6ipqqusra6vsLGys7S1tre4ubq7vL2+v8DBwsPExcbHyMnKy8zNzs/Q0dLT1NXW19jZ2tvc3d7f4OHi4+Tl5ufo6err7O3u7/Dx8vP09fb3+Pn6+/z9/v8AAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhIiMkJSYnKCkqKywtLi8wMTIzNDU2Nzg5Ojs8PT4/QEFCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xdXl9gYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXp7fH1+f4CBgoOEhYaHiImKi4yNjo+QkZKTlJWWl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur7CxsrO0tba3uLm6u7y9vr/AwcLDxMXGx8jJysvMzc7P0NHS09TV1tfY2drb3N3e3+Dh4uPk5ebn6Onq6+zt7u/w8fLz9PX29/j5+vv8/f7/AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8gISIjJCUmJygpKissLS4vMDEyMzQ1Njc4OTo7PD0+P0BBQkNERUZHSElKS0xNTk9QUVJTVFVWV1hZWltcXV5fYGFiY2RlZmdoaWprbG1ub3BxcnN0dXZ3eHl6e3x9fn+AgYKDhIWGh4iJiouMjY6PkJGSk5SVlpeYmZqbnJ2en6ChoqOkpaanqKmqq6ytrq+wsbKztLW2t7i5uru8vb6/wMHCw8TFxsfIycrLzM3Oz9DR0tPU1dbX2Nna29zd3t/g4eLj5OXm5+jp6uvs7e7v8PHy8/T19vf4+fr7/P3+/w==')
+            };
+            
+            // Создание изображения машины
+            function createCarImage(color) {
+                const canvas = document.createElement('canvas');
+                canvas.width = 50;
+                canvas.height = 30;
+                const ctx = canvas.getContext('2d');
+                
+                // Кузов
+                ctx.fillStyle = color;
+                ctx.fillRect(0, 5, 50, 20);
+                ctx.fillRect(10, 0, 30, 30);
+                
+                // Окна
+                ctx.fillStyle = '#a0d0ff';
+                ctx.fillRect(15, 2, 20, 8);
+                ctx.fillRect(15, 20, 20, 8);
+                
+                // Колеса
+                ctx.fillStyle = '#222';
+                ctx.fillRect(5, 3, 6, 24);
+                ctx.fillRect(39, 3, 6, 24);
+                
+                // Фары
+                ctx.fillStyle = '#ff0';
+                ctx.fillRect(0, 12, 3, 6);
+                ctx.fillStyle = '#f00';
+                ctx.fillRect(47, 12, 3, 6);
+                
+                return canvas;
+            }
+            
+            // Создание изображения грузовика
+            function createTruckImage() {
+                const canvas = document.createElement('canvas');
+                canvas.width = 60;
+                canvas.height = 30;
+                const ctx = canvas.getContext('2d');
+                
+                // Кузов
+                ctx.fillStyle = '#0af';
+                ctx.fillRect(0, 5, 60, 25);
+                ctx.fillRect(10, 0, 40, 30);
+                
+                // Окно
+                ctx.fillStyle = '#a0d0ff';
+                ctx.fillRect(15, 3, 15, 10);
+                
+                // Колеса
+                ctx.fillStyle = '#222';
+                ctx.fillRect(5, 25, 12, 5);
+                ctx.fillRect(43, 25, 12, 5);
+                
+                return canvas;
+            }
+            
+            // Создание изображения барьера
+            function createBarrierImage() {
+                const canvas = document.createElement('canvas');
+                canvas.width = 40;
+                canvas.height = 20;
+                const ctx = canvas.getContext('2d');
+                
+                ctx.fillStyle = '#ff5555';
+                ctx.fillRect(0, 0, 40, 20);
+                
+                ctx.fillStyle = '#ffff00';
+                for(let i = 0; i < 40; i += 10) {
+                    ctx.fillRect(i, 0, 5, 20);
+                }
+                
+                return canvas;
+            }
+            
+            // Создание изображения конуса
+            function createConeImage() {
+                const canvas = document.createElement('canvas');
+                canvas.width = 20;
+                canvas.height = 30;
+                const ctx = canvas.getContext('2d');
+                
+                ctx.fillStyle = '#ff8800';
+                ctx.beginPath();
+                ctx.moveTo(10, 0);
+                ctx.lineTo(0, 30);
+                ctx.lineTo(20, 30);
+                ctx.closePath();
+                ctx.fill();
+                
+                ctx.fillStyle = '#ffffff';
+                for(let i = 5; i < 30; i += 8) {
+                    ctx.fillRect(5, i, 10, 3);
+                }
+                
+                return canvas;
+            }
+            
+            // Создание изображения Porsche
+            function createPorscheImage() {
+                const canvas = document.createElement('canvas');
+                canvas.width = 60;
+                canvas.height = 30;
+                const ctx = canvas.getContext('2d');
+                
+                // Кузов
+                ctx.fillStyle = '#ff0000';
+                ctx.beginPath();
+                ctx.moveTo(5, 20);
+                ctx.lineTo(15, 5);
+                ctx.lineTo(45, 5);
+                ctx.lineTo(55, 20);
+                ctx.lineTo(55, 25);
+                ctx.lineTo(45, 30);
+                ctx.lineTo(15, 30);
+                ctx.lineTo(5, 25);
+                ctx.closePath();
+                ctx.fill();
+                
+                // Окна
+                ctx.fillStyle = '#a0d0ff';
+                ctx.beginPath();
+                ctx.moveTo(20, 10);
+                ctx.lineTo(40, 10);
+                ctx.lineTo(45, 20);
+                ctx.lineTo(35, 20);
+                ctx.closePath();
+                ctx.fill();
+                
+                // Колеса
+                ctx.fillStyle = '#222';
+                ctx.beginPath();
+                ctx.arc(15, 28, 5, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(45, 28, 5, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Фары
+                ctx.fillStyle = '#ffff00';
+                ctx.beginPath();
+                ctx.arc(55, 22, 3, 0, Math.PI * 2);
+                ctx.fill();
+                
+                return canvas;
+            }
+            
+            // Инициализация игры
+            function initGame() {
+                gameRunning = true;
+                startScreen.style.display = 'none';
+                carSelection.style.display = 'none';
+                carX = canvas.width / 2 - 25;
+                carSpeed = 0;
+                roadSpeed = 3;
+                obstacles = [];
+                score = 0;
+                level = 1;
+                frames = 0;
+                
+                updateScore();
+                gameLoop();
+                
+                // Воспроизводим звук двигателя
+                sounds.engine.loop = true;
+                sounds.engine.volume = 0.3;
+                sounds.engine.play().catch(e => console.log("Autoplay blocked:", e));
+            }
+            
+            // Игровой цикл
+            function gameLoop() {
+                if (!gameRunning) return;
+                
+                update();
+                render();
+                
+                requestAnimationFrame(gameLoop);
+            }
+            
+            // Обновление игрового состояния
+            function update() {
+                frames++;
+                
+                // Движение машины
+                carX += carSpeed;
+                if (carX < 50) carX = 50;
+                if (carX > canvas.width - 100) carX = canvas.width - 100;
+                
+                // Обновление дороги
+                roadY += roadSpeed;
+                if (roadY >= 40) roadY = 0;
+                
+                // Обновление препятствий
+                for (let i = 0; i < obstacles.length; i++) {
+                    obstacles[i].y += roadSpeed;
+                    
+                    // Проверка столкновений
+                    if (
+                        carX < obstacles[i].x + obstacles[i].width &&
+                        carX + 50 > obstacles[i].x &&
+                        350 < obstacles[i].y + obstacles[i].height &&
+                        350 + 30 > obstacles[i].y
+                    ) {
+                        gameOver();
+                        return;
+                    }
+                    
+                    // Удаление вышедших за пределы препятствий
+                    if (obstacles[i].y > canvas.height) {
+                        obstacles.splice(i, 1);
+                        i--;
+                        score += 10;
+                        updateScore();
+                    }
+                }
+                
+                // Добавление новых препятствий
+                if (frames % (100 - level * 10) === 0) {
+                    createObstacle();
+                }
+                
+                // Увеличение уровня
+                if (score > level * 100) {
+                    level++;
+                    levelDisplay.textContent = level;
+                    roadSpeed += 0.5;
+                }
+            }
+            
+            // Создание препятствия
+            function createObstacle() {
+                const type = Math.floor(Math.random() * 4);
+                const width = [60, 40, 20, 60][type];
+                const height = [30, 20, 30, 30][type];
+                
+                obstacles.push({
+                    x: 50 + Math.random() * (canvas.width - 100 - width),
+                    y: -height,
+                    width: width,
+                    height: height,
+                    type: type
+                });
+            }
+            
+            // Отрисовка игры
+            function render() {
+                // Очистка холста
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Рисуем дорогу
+                drawRoad();
+                
+                // Рисуем препятствия
+                for (const obstacle of obstacles) {
+                    ctx.drawImage(
+                        obstacleImgs[obstacle.type], 
+                        obstacle.x, 
+                        obstacle.y,
+                        obstacle.width,
+                        obstacle.height
+                    );
+                }
+                
+                // Рисуем машину игрока
+                ctx.drawImage(carImages[selectedCarType], carX, 350, 50, 30);
+                
+                // Рисуем счет
+                ctx.fillStyle = '#fff';
+                ctx.font = '20px Orbitron';
+                ctx.fillText(`Счет: ${score}`, 20, 30);
+                ctx.fillText(`Уровень: ${level}`, canvas.width - 150, 30);
+            }
+            
+            // Отрисовка дороги
+            function drawRoad() {
+                // Асфальт
+                ctx.fillStyle = '#222';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Разметка
+                ctx.fillStyle = '#fff';
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 5;
+                
+                // Боковые линии
+                ctx.beginPath();
+                ctx.moveTo(50, 0);
+                ctx.lineTo(50, canvas.height);
+                ctx.stroke();
+                
+                ctx.beginPath();
+                ctx.moveTo(canvas.width - 50, 0);
+                ctx.lineTo(canvas.width - 50, canvas.height);
+                ctx.stroke();
+                
+                // Пунктирная линия посередине
+                for (let y = -40; y < canvas.height; y += 40) {
+                    ctx.fillRect(canvas.width/2 - 2, y + roadY, 4, 20);
+                }
+                
+                // Добавляем текстуру асфальта
+                ctx.fillStyle = '#333';
+                for (let i = 0; i < 100; i++) {
+                    const x = Math.random() * canvas.width;
+                    const y = Math.random() * canvas.height;
+                    ctx.fillRect(x, y, 2, 2);
+                }
+            }
+            
+            // Обновление счета
+            function updateScore() {
+                scoreDisplay.textContent = score;
+                speedDisplay.textContent = Math.floor(roadSpeed * 20);
+            }
+            
+            // Конец игры
+            function gameOver() {
+                gameRunning = false;
+                sounds.engine.pause();
+                sounds.crash.play();
+                
+                // Анимация взрыва
+                for (let i = 0; i < 30; i++) {
+                    setTimeout(() => {
+                        ctx.fillStyle = `rgb(255, ${Math.floor(100 + Math.random() * 155)}, 0)`;
+                        ctx.beginPath();
+                        ctx.arc(
+                            carX + 25 + Math.random() * 30 - 15,
+                            365 + Math.random() * 30 - 15,
+                            Math.random() * 10 + 2,
+                            0,
+                            Math.PI * 2
+                        );
+                        ctx.fill();
+                    }, i * 30);
+                }
+                
+                setTimeout(() => {
+                    startScreen.style.display = 'flex';
+                    startBtn.textContent = 'ИГРАТЬ СНОВА';
+                }, 1000);
+            }
+            
+            // Обработчики управления
+            function handleKeyDown(e) {
+                if (!gameRunning) return;
+                
+                if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+                    carSpeed = -5;
+                }
+                if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+                    carSpeed = 5;
+                }
+                if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
+                    carSpeed *= 1.5;
+                }
+                
+                // Предотвращаем скроллинг страницы
+                if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' ', 'w', 'a', 's', 'd'].includes(e.key)) {
+                    e.preventDefault();
+                }
+            }
+            
+            function handleKeyUp() {
+                carSpeed = 0;
+            }
+            
+            // Мобильное управление
+            leftBtn.addEventListener('touchstart', () => carSpeed = -5);
+            rightBtn.addEventListener('touchstart', () => carSpeed = 5);
+            upBtn.addEventListener('touchstart', () => carSpeed *= 1.5);
+            
+            leftBtn.addEventListener('touchend', () => carSpeed = 0);
+            rightBtn.addEventListener('touchend', () => carSpeed = 0);
+            upBtn.addEventListener('touchend', () => carSpeed = carSpeed / 1.5);
+            
+            // Выбор машины для игры
+            const carOptions = document.querySelectorAll('.car-option');
+            carOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    carOptions.forEach(opt => opt.classList.remove('selected'));
+                    option.classList.add('selected');
+                    selectedCarType = option.dataset.car;
+                });
+            });
+            
+            startBtn.addEventListener('click', () => {
+                startScreen.style.display = 'none';
+                carSelection.style.display = 'flex';
+            });
+            
+            startWithSelectedCar.addEventListener('click', () => {
+                if (selectedCarType) {
+                    initGame();
+                } else {
+                    alert('Выберите машину для игры!');
+                }
+            });
+            
+            // Обработчики клавиатуры
+            document.addEventListener('keydown', handleKeyDown);
+            document.addEventListener('keyup', handleKeyUp);
+            
+            // Предотвращаем скроллинг на мобильных при касании игры
+            canvas.addEventListener('touchstart', (e) => {
+                if (gameRunning) e.preventDefault();
+            }, { passive: false });
+        });
+
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) section.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
